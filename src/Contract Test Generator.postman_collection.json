@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f6c7434c-af8c-4226-bc74-6ba52b2d4811",
+		"_postman_id": "57a18af7-25db-4959-b766-ebb0ecb78a9c",
 		"name": "Contract Test Generator",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -196,8 +196,7 @@
 							"variable": [
 								{
 									"key": "apiId",
-									"value": "{{coll-apiId}}",
-									"type": "string"
+									"value": "{{coll-apiId}}"
 								}
 							]
 						}
@@ -270,13 +269,11 @@
 							"variable": [
 								{
 									"key": "apiId",
-									"value": "{{coll-apiId}}",
-									"type": "string"
+									"value": "{{coll-apiId}}"
 								},
 								{
 									"key": "versionId",
-									"value": "{{coll-versionId}}",
-									"type": "string"
+									"value": "{{coll-versionId}}"
 								}
 							]
 						}
@@ -357,18 +354,15 @@
 							"variable": [
 								{
 									"key": "apiId",
-									"value": "{{coll-apiId}}",
-									"type": "string"
+									"value": "{{coll-apiId}}"
 								},
 								{
 									"key": "apiVersionId",
-									"value": "{{coll-versionId}}",
-									"type": "string"
+									"value": "{{coll-versionId}}"
 								},
 								{
 									"key": "schemaId",
-									"value": "{{coll-schemaId}}",
-									"type": "string"
+									"value": "{{coll-schemaId}}"
 								}
 							]
 						}
@@ -681,6 +675,53 @@
 			"name": "Contract Tests",
 			"item": [
 				{
+					"name": "Get api-docs",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get api-docs.\", () => {\r",
+									"  const responseJson = pm.response.json();\r",
+									"  pm.expect(responseJson.swagger).to.eql(\"2.0\");\r",
+									"\r",
+									"  //const schema1 = jsyaml.load(jsonData.schema.schema);\r",
+									"  const schema2 = responseJson;\r",
+									"  pm.collectionVariables.set('coll-schema', JSON.stringify(schema2)); \r",
+									"  console.log(pm.collectionVariables.get('coll-schema'));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apidocs}}",
+							"host": [
+								"{{apidocs}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Build Schema Tests",
 					"event": [
 						{
@@ -739,7 +780,9 @@
 									"    }\r",
 									"}\r",
 									"\r",
+									"\r",
 									"pm.collectionVariables.set('coll-schemaTests', JSON.stringify(schemaTests));\r",
+									"console.log(pm.collectionVariables.get('coll-schemaTests'));\r",
 									"\r",
 									"//\r",
 									"// Supporting Methods Below\r",
@@ -1380,19 +1423,23 @@
 	"variable": [
 		{
 			"key": "coll-apiIds",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "coll-apiId",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "coll-schemaId",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "coll-versionId",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "coll-schema",
@@ -1405,6 +1452,10 @@
 		{
 			"key": "coll-schemaTests",
 			"value": ""
+		},
+		{
+			"key": "apidocs",
+			"value": "http://localhost:8080/api-docs"
 		}
 	]
 }
